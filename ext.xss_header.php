@@ -38,6 +38,8 @@ class Xss_header_ext
     public function __construct($settings = '')
     {
         $this->settings = $settings;
+
+				$this->EE =& get_instance();
     }
 
     /**
@@ -55,7 +57,7 @@ class Xss_header_ext
         // Setup custom settings in this array.
         $this->settings = array();
 
-        ee()->db->insert_batch('extensions', array(
+        $this->EE->db->insert_batch('extensions', array(
             array(
                 'class' => __CLASS__,
                 'method' => 'sessions_start',
@@ -77,7 +79,7 @@ class Xss_header_ext
     {
 			if(REQ == 'CP')
 			{
-				ee()->output->set_header('X-XSS-Protection: 0');
+				$this->EE->output->set_header('X-XSS-Protection: 0');
 			}
     }
 
@@ -90,7 +92,7 @@ class Xss_header_ext
      */
     public function disable_extension()
     {
-        ee()->db->delete('extensions', array('class' => __CLASS__));
+        $this->EE->db->delete('extensions', array('class' => __CLASS__));
     }
 
     /**
@@ -108,7 +110,7 @@ class Xss_header_ext
             return FALSE;
         }
 
-        ee()->db->update('extensions', array('version' => $this->version), array('class' => __CLASS__));
+        $this->EE->db->update('extensions', array('version' => $this->version), array('class' => __CLASS__));
     }
 }
 
